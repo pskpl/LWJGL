@@ -65,14 +65,9 @@ public class DummyGame implements IGameLogic {
 //        Mesh mesh = new Mesh();  // comment this line when you enable OBJLoader
 //        Mesh mesh = OBJLoader.loadMesh("teapot.obj");
         Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
-        
 
         mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
-        
-        /********************************debug use!!!*******************************/
-        gameItem.setScale(0.1f);
-        gameItem.setPosition(-10, -1, -2);
 
         gameItems = new GameItem[]{gameItem};
         
