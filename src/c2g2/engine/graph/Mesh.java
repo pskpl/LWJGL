@@ -197,10 +197,10 @@ public class Mesh {
     		Vector3f crossProduct = axis.cross(v);
     		// compute dot product
     		float dotProduct = axis.dot(v);
-    		// compute cos(angle)
-    		float cosAngle = (float) Math.cos(angle);
-    		// compute sin(angle)
-    		float sinAngle = (float) Math.sin(angle);
+    		// compute cos(angle in randians)
+    		float cosAngle = (float) Math.cos(Math.toRadians(angle));
+    		// compute sin(angle in randians)
+    		float sinAngle = (float) Math.sin(Math.toRadians(angle));
     		// use Rodrigues formula
     		pos[i * 3] = v.x * cosAngle + crossProduct.x * sinAngle + axis.x * dotProduct * (1 - cosAngle);
     		pos[i * 3 + 1] *= v.y * cosAngle + crossProduct.y * sinAngle + axis.y * dotProduct * (1 - cosAngle);
