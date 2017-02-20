@@ -3,7 +3,6 @@ package c2g2.engine.graph;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4d;
 import org.joml.Vector4f;
 
 import c2g2.engine.GameItem;
@@ -23,7 +22,7 @@ public class Transformation {
     }
 
     public final Matrix4f getProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
-        projectionMatrix.identity();
+    	projectionMatrix.identity();
     	
         // compute aspect ratio
         float aspectRatio = width / height;
@@ -43,7 +42,7 @@ public class Transformation {
     	Vector3f cameraTarget = camera.getTarget();
     	Vector3f up = camera.getUp();
         viewMatrix.identity();
-    	
+    	//// --- student code ---
         // compute coordinates of z axis of camera coordinate frame
         float zx = cameraPos.x - cameraTarget.x, zy = cameraPos.y - cameraTarget.y, zz = cameraPos.z - cameraTarget.z;
         // normalize z vector
@@ -78,7 +77,7 @@ public class Transformation {
         Vector3f position = gameItem.getPosition();
         float scaling = gameItem.getScale();
         modelMatrix.identity();
-    	
+    	//// --- student code ---
         // build translation matrix
         Matrix4f translate = new Matrix4f().identity().setColumn(3, new Vector4f(position, 1f));
         

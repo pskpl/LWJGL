@@ -62,20 +62,20 @@ public class DummyGame implements IGameLogic {
         // NOTE: 
         //   please uncomment following lines to test your OBJ Loader.
         Mesh mesh = OBJLoader.loadMesh("src/resources/models/bunny.obj");
+        
+        mesh.scaleMesh(0.2f, 0.2f, 0.2f);
+        mesh.translateMesh(new Vector3f(0.3f, -0.3f, -0.9f));
+        
+        
         //Mesh mesh = new Mesh();  // comment this line when you enable OBJLoader
-//        Mesh mesh = OBJLoader.loadMesh("teapot.obj");
         Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
+        
 
         mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
-        
-        
-        gameItem.setScale(0.1f);
-        gameItem.setPosition(0f, 0f, -1f);
-        
 
         gameItems = new GameItem[]{gameItem};
-        
+
         ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
         Vector3f lightColour = new Vector3f(1, 1, 1);
         Vector3f lightPosition = new Vector3f(0, 0, 1);

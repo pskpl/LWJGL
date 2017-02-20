@@ -1,6 +1,6 @@
 package c2g2.game;
 
-import org.joml.Vector3f;
+import org.joml.Matrix3f;
 
 import c2g2.engine.GameEngine;
 import c2g2.engine.IGameLogic;
