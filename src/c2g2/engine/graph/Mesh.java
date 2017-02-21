@@ -213,14 +213,17 @@ public class Mesh {
     	cleanUp();
     	//reset position of each point
     	//Do not change textco, norms, inds
-    	//student code
     	for(int i=0; i< pos.length/3; i++){
-    		Vector3f v = new Vector3f(pos[i * 3] - p.x, pos[i * 3 + 1] - p.y, pos[i * 3 + 2] - p.z);
-    		float c = -2.0f * v.dot(n) / n.dot(n);
-    		Vector3f u = new Vector3f(c * v.x, c * v.y, c * v.z);
-    		pos[i * 3] = v.x + u.x;
-    		pos[i * 3 + 1] = v.y + u.y;
-    		pos[i * 3 + 2] = v.z * u.z;
+    		// compute how many "steps" we need to move current point onto the plane along plane's normal direction
+    		Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
+    		Vector3f v_p = new Vector3f(v.x - p.x, v.y - p.y, v.z - p.z);
+    		float t = v_p.dot(n);
+//    		float t = (n.dot(p) - n.dot(v)) / (n.dot(n));
+//    		float t = ((n.x * p.x + n.y * p.y + n.z * p.z) - (n.x * v.x + n.y * v.y + n.z * v.z)) / (n.x * n.x + n.y * n.y + n.z * n.z);
+    		// move current point twice the distance along normal direction of the plane
+    		pos[i * 3] -= 2 * t * n.x;
+    		pos[i * 3 + 1] -= 2 * t * n.y;
+    		pos[i * 3 + 2] -= 2 * t * n.z;
     	}
     	setMesh(pos, textco, norms, inds);
     }
