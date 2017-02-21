@@ -1,6 +1,5 @@
 package c2g2.engine.graph;
 
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -22,8 +21,8 @@ public class Transformation {
     }
 
     public final Matrix4f getProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
-    	projectionMatrix.identity();
-    	
+        projectionMatrix.identity();
+        
         // compute aspect ratio
         float aspectRatio = width / height;
         // compute cot(fov / 2)
@@ -42,7 +41,7 @@ public class Transformation {
     	Vector3f cameraTarget = camera.getTarget();
     	Vector3f up = camera.getUp();
         viewMatrix.identity();
-    	//// --- student code ---
+        
         // compute coordinates of z axis of camera coordinate frame
         float zx = cameraPos.x - cameraTarget.x, zy = cameraPos.y - cameraTarget.y, zz = cameraPos.z - cameraTarget.z;
         // normalize z vector
@@ -77,39 +76,13 @@ public class Transformation {
         Vector3f position = gameItem.getPosition();
         float scaling = gameItem.getScale();
         modelMatrix.identity();
-    	//// --- student code ---
-        // build translation matrix
-        Matrix4f translate = new Matrix4f().identity().setColumn(3, new Vector4f(position, 1f));
         
-        // build rotation matrix about x axis
-        double xradians = Math.toRadians(rotation.x);
-        float xcos = (float)Math.cos(xradians);
-        float xsin = (float)Math.sin(xradians);
-        Vector4f xcol1 = new Vector4f(0f, xcos, xsin, 0f);
-        Vector4f xcol2 = new Vector4f(0f, -xsin, xcos, 0f);
-        Matrix4f rx = new Matrix4f().identity().setColumn(1, xcol1).setColumn(2, xcol2);
-        
-        // build rotation matrix about y axis
-        double yradians = Math.toRadians(rotation.y);
-        float ycos = (float)Math.cos(yradians);
-        float ysin = (float)Math.sin(yradians);
-        Vector4f ycol0 = new Vector4f(ycos, 0f, -ysin, 0f);
-        Vector4f ycol2 = new Vector4f(ysin, 0f, ycos, 0f);
-        Matrix4f ry = new Matrix4f().identity().setColumn(1, ycol0).setColumn(2, ycol2);
-        
-        // build rotation matrix about z axis
-        double zradians = Math.toRadians(rotation.z);
-        float zcos = (float)Math.cos(zradians);
-        float zsin = (float)Math.sin(zradians);
-        Vector4f zcol0 = new Vector4f(zcos, zsin, 0f, 0f);
-        Vector4f zcol1 = new Vector4f(-zsin, zcos, 0f, 0f);
-        Matrix4f rz = new Matrix4f().identity().setColumn(0, zcol0).setColumn(1, zcol1);
-        
-        // build scaling matrix
-        Matrix4f scale = new Matrix4f().identity().set3x3(new Matrix3f().scaling(scaling));
-        
-        // combine into model matrix
-        modelMatrix.mul(translate).mul(rz).mul(ry).mul(rx).mul(scale);
+        modelMatrix.translate(position);
+        modelMatrix.rotateX((float)Math.toRadians(rotation.x));
+        modelMatrix.rotateY((float)Math.toRadians(rotation.y));
+        modelMatrix.rotateZ((float)Math.toRadians(rotation.z));
+        modelMatrix.scale(scaling);
+     
         return modelMatrix;
     }
 

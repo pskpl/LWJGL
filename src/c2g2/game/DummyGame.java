@@ -61,18 +61,18 @@ public class DummyGame implements IGameLogic {
         float reflectance = 1f;        
         // NOTE: 
         //   please uncomment following lines to test your OBJ Loader.
-        Mesh mesh = OBJLoader.loadMesh("src/resources/models/bunny.obj");
+//        Mesh mesh = OBJLoader.loadMesh("src/resources/models/bunny.obj");
+        Mesh mesh = OBJLoader.loadMesh("minicooper.obj");
         
-        mesh.scaleMesh(0.2f, 0.2f, 0.2f);
-        mesh.translateMesh(new Vector3f(0.3f, -0.3f, -0.9f));
-        
-        
-        //Mesh mesh = new Mesh();  // comment this line when you enable OBJLoader
+//        mesh.scaleMesh(0.005f, 0.005f, 0.005f);
+//        mesh.translateMesh(new Vector3f(-0.3f, 0f, -1f));
         Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
         
 
         mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
+        
+        gameItem.setScale(0.005f);
 
         gameItems = new GameItem[]{gameItem};
 
