@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;
 
@@ -190,10 +192,8 @@ public class Mesh {
     	//reset position of each point
     	//Do not change textco, norms, inds
     	//student code
-    	// compute cos(angle in randians)
-    	float cos = (float)Math.cos(Math.toRadians(angle));
-    	float sin = (float)Math.sin(Math.toRadians(angle));
     	for(int i=0; i< pos.length/3; i++){
+    		/*
     		// build vector to be rotated
     		Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
     		// compute cross product
@@ -201,10 +201,62 @@ public class Mesh {
     		axis.cross(v, crossProduct);
     		// compute dot product
     		float dotProduct = axis.dot(v);
+    		// compute cos(angle in randians)
+    		float cosAngle = (float) Math.cos(Math.toRadians(angle));
+    		// compute sin(angle in randians)
+    		float sinAngle = (float) Math.sin(Math.toRadians(angle));
     		// use Rodrigues formula
-    		pos[i * 3] = v.x * cos + crossProduct.x * sin + axis.x * dotProduct * (1 - cos);
-    		pos[i * 3 + 1] = v.y * cos + crossProduct.y * sin + axis.y * dotProduct * (1 - cos);
-    		pos[i * 3 + 2] = v.z * cos + crossProduct.z * sin + axis.z * dotProduct * (1 - cos);
+    		pos[i * 3] = v.x * cosAngle + crossProduct.x * sinAngle + axis.x * dotProduct * (1 - cosAngle);
+    		pos[i * 3 + 1] *= v.y * cosAngle + crossProduct.y * sinAngle + axis.y * dotProduct * (1 - cosAngle);
+    		pos[i * 3 + 2] *= v.z * cosAngle + crossProduct.z * sinAngle + axis.z * dotProduct * (1 - cosAngle);
+    		*/
+    		angle = (float)Math.toRadians(angle);
+    		float sin = (float)Math.sin(angle);
+            float cos = (float)Math.cos(angle);
+            float t = 1 - cos;
+            
+            Matrix3f R = new Matrix3f(cos,           -axis.z * sin, axis.y * sin, 
+            						  axis.z * sin,  cos,           -axis.x * sin, 
+            						  -axis.y * sin,                axis.x * sin, cos);
+            Matrix3f temp = new Matrix3f(axis.x * axis.x * t, axis.x * axis.y * t, axis.x * axis.z * t, 
+            							 axis.x * axis.y * t, axis.y * axis.y * t, axis.y * axis.z * t, 
+            							 axis.x * axis.z * t, axis.y * axis.z * t, axis.z * axis.z * t);
+            R.add(temp);
+            
+            Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
+            pos[i * 3] = R.m00 * v.x + R.m01 * v.y + R.m02 * v.z;
+            pos[i * 3 + 1] = R.m10 * v.x + R.m11 * v.y + R.m12 * v.z;
+            pos[i * 3 + 2] = R.m20 * v.x + R.m21 * v.y + R.m22 * v.z;
+    		/*
+    		Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
+    		angle = (float)Math.toRadians(angle);
+    		float sin = (float)Math.sin(angle * 0.5);
+            float cos = (float)Math.cos(angle * 0.5);
+    		v.rotate(new Quaternionf(axis.x * sin, axis.y * sin, axis.z * sin, cos));
+    		
+    		pos[i * 3] = v.x;
+            pos[i * 3 + 1] = v.y;
+            pos[i * 3 + 2] = v.z;
+            */
+    		/*
+    		angle = (float)Math.toRadians(angle);
+    		
+    		float q0x = v.x, q0y = v.y, q0z = v.z;
+    		
+            float sin = (float)Math.sin(angle * 0.5);
+            float cos = (float)Math.cos(angle * 0.5);
+            float q1x = axis.x * sin, q1y = axis.y * sin, q1z = axis.z * sin, q1w = cos;
+            float scale = 1.0f / (q1x * q1x + q1y * q1y + q1z * q1z);
+//            float scale = 1f;
+            
+            float q2x =  q1w * q0x + q1y * q0z - q1z * q0y;
+            float q2y =  q1w * q0y - q1x * q0z + q1z * q0x;
+            float q2z =  q1w * q0z + q1x * q0y - q1y * q0x;
+            float q2w = -q1x * q0x - q1y * q0y - q1z * q0z;
+            pos[i * 3] = (-q2w * q1x + q2x * q1w - q2y * q1z + q2z * q1y) * scale;
+            pos[i * 3 + 1] = (-q2w * q1y + q2x * q1z + q2y * q1w - q2z * q1x) * scale;
+            pos[i * 3 + 2] = (-q2w * q1z - q2x * q1y + q2y * q1x + q2z * q1w) * scale;
+            */
     	}
     	setMesh(pos, textco, norms, inds);
     }
@@ -213,17 +265,15 @@ public class Mesh {
     	cleanUp();
     	//reset position of each point
     	//Do not change textco, norms, inds
+    	//student code
     	for(int i=0; i< pos.length/3; i++){
-    		// compute how many "steps" we need to move current point onto the plane along plane's normal direction
+    		// compute how many "steps" do we need to move current point onto the plane along plane's normal direction
     		Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
-    		Vector3f v_p = new Vector3f(v.x - p.x, v.y - p.y, v.z - p.z);
-    		float t = v_p.dot(n);
-//    		float t = (n.dot(p) - n.dot(v)) / (n.dot(n));
-//    		float t = ((n.x * p.x + n.y * p.y + n.z * p.z) - (n.x * v.x + n.y * v.y + n.z * v.z)) / (n.x * n.x + n.y * n.y + n.z * n.z);
+    		float t = (n.dot(p) - n.dot(v)) / (n.x * n.x + n.y * n.y + n.z * n.z);
     		// move current point twice the distance along normal direction of the plane
-    		pos[i * 3] -= 2 * t * n.x;
-    		pos[i * 3 + 1] -= 2 * t * n.y;
-    		pos[i * 3 + 2] -= 2 * t * n.z;
+    		pos[i * 3] += 2 * t * n.x;
+    		pos[i * 3 + 1] += 2 * t * n.y;
+    		pos[i * 3 + 2] += 2 * t * n.z;
     	}
     	setMesh(pos, textco, norms, inds);
     }
