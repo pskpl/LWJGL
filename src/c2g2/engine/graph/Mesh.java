@@ -211,12 +211,13 @@ public class Mesh {
     	//reset position of each point
     	//Do not change textco, norms, inds
     	for(int i=0; i< pos.length/3; i++){
-    		Vector3f v = new Vector3f(pos[i * 3] - p.x, pos[i * 3 + 1] - p.y, pos[i * 3 + 2] - p.z);
-    		float c = -2.0f * v.dot(n) / n.dot(n);
-    		Vector3f u = new Vector3f(c * v.x, c * v.y, c * v.z);
-    		pos[i * 3] = v.x + u.x;
-    		pos[i * 3 + 1] = v.y + u.y;
-    		pos[i * 3 + 2] = v.z * u.z;
+    		// compute the perpendicular distance from current point to the plane
+    	    Vector3f v = new Vector3f(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
+    	    float t = n.dot(p) - n.dot(v);
+    	    // move current point twice the distance along normal direction of the plane
+    	    pos[i * 3] += 2 * t * n.x;
+    	    pos[i * 3 + 1] += 2 * t * n.y;
+    	    pos[i * 3 + 2] += 2 * t * n.z;
     	}
     	setMesh(pos, textco, norms, inds);
     }

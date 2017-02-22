@@ -58,21 +58,14 @@ public class DummyGame implements IGameLogic {
     @Override
     public void init(Window window) throws Exception {
         renderer.init(window);
-        float reflectance = 1f;        
-        // NOTE: 
-        //   please uncomment following lines to test your OBJ Loader.
+        float reflectance = 1f;
 //        Mesh mesh = OBJLoader.loadMesh("src/resources/models/bunny.obj");
-        Mesh mesh = OBJLoader.loadMesh("minicooper.obj");
+        Mesh mesh = OBJLoader.loadMesh("tree.obj");
         
-//        mesh.scaleMesh(0.005f, 0.005f, 0.005f);
-//        mesh.translateMesh(new Vector3f(-0.3f, 0f, -1f));
         Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
-        
 
         mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
-        
-        gameItem.setScale(0.005f);
 
         gameItems = new GameItem[]{gameItem};
 
@@ -186,6 +179,7 @@ public class DummyGame implements IGameLogic {
     	}
     	else if(window.isKeyPressed(GLFW_KEY_7)){
     		//rotation by manipulating mesh
+//    		gameItems[currentObj].getMesh().reflectMesh(new Vector3f(0f,0f,0f), new Vector3f(0f, 1f, 0f));
     		gameItems[currentObj].getMesh().reflectMesh(new Vector3f(0f,1f,0f), new Vector3f(0f, 1f, 0f));
     	}
     	else if(window.isKeyPressed(GLFW_KEY_1)){
