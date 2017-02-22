@@ -179,7 +179,6 @@ public class DummyGame implements IGameLogic {
     	}
     	else if(window.isKeyPressed(GLFW_KEY_7)){
     		//rotation by manipulating mesh
-//    		gameItems[currentObj].getMesh().reflectMesh(new Vector3f(0f,0f,0f), new Vector3f(0f, 1f, 0f));
     		gameItems[currentObj].getMesh().reflectMesh(new Vector3f(0f,1f,0f), new Vector3f(0f, 1f, 0f));
     	}
     	else if(window.isKeyPressed(GLFW_KEY_1)){
