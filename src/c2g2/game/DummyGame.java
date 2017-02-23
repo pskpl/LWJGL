@@ -23,7 +23,7 @@ public class DummyGame implements IGameLogic {
     
     private static final float SCALE_STEP = 0.01f;
     
-    private static final float TRANSLATE_STEP = 0.01f;
+    private static final float TRANSLATE_STEP = 1f;
     
     private static final float ROTATION_STEP = 0.3f;
 
@@ -60,7 +60,7 @@ public class DummyGame implements IGameLogic {
         renderer.init(window);
         float reflectance = 1f;
 //        Mesh mesh = OBJLoader.loadMesh("src/resources/models/bunny.obj");
-        Mesh mesh = OBJLoader.loadMesh("tree.obj");
+        Mesh mesh = OBJLoader.loadMesh("city.obj");
         
         Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
 
