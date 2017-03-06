@@ -96,6 +96,7 @@ public class Renderer {
         return shaderProgram;
     }
 
+    // TODO
     /* Student code
     public ShaderProgram createMyShader() throws Exception {
         // ...
@@ -108,6 +109,7 @@ public class Renderer {
         shaderProgramList.put("skeleton", createSkeletonShader());
 
         // Student code
+        // TODO 
     }
 
     public int getNumShaders() { return shaderProgramList.size(); }
@@ -170,6 +172,7 @@ public class Renderer {
             // Update Light Uniforms
             shaderProgram.setUniform("ambientLight", ambientLight);
         }
+        // TODO
         /* Student code
         else if(currentShader.equals("my_shader")) {
             // ...
