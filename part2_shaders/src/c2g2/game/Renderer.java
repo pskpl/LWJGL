@@ -96,11 +96,11 @@ public class Renderer {
         return shaderProgram;
     }
     
-    public ShaderProgram createGourandShader() throws Exception {
+    public ShaderProgram createGouraudShader() throws Exception {
     	ShaderProgram shaderProgram = new ShaderProgram();
 
-        shaderProgram.createVertexShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gourand_vertex.vs"))));
-        shaderProgram.createFragmentShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gourand_fragment.fs"))));
+        shaderProgram.createVertexShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gouraud_vertex.vs"))));
+        shaderProgram.createFragmentShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gouraud_fragment.fs"))));
         shaderProgram.link();
 
         // Create uniforms for modelView and projection matrices and texture
@@ -131,7 +131,7 @@ public class Renderer {
         // Create our example shader
         shaderProgramList.put("phong", createPhongShader());
         shaderProgramList.put("skeleton", createSkeletonShader());
-        shaderProgramList.put("gourand", createGourandShader());
+        shaderProgramList.put("gouraud", createGouraudShader());
         // Student code
         // TODO 
     }
@@ -196,11 +196,30 @@ public class Renderer {
             // Update Light Uniforms
             shaderProgram.setUniform("ambientLight", ambientLight);
         }
-        else if(currentShader.equals("gourand")) {
-            shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        else if(currentShader.equals("gouraud")) {
+        	shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
             // Update Light Uniforms
             shaderProgram.setUniform("ambientLight", ambientLight);
+            shaderProgram.setUniform("specularPower", specularPower);
+            // Get a copy of the point light object and transform its position to view coordinates
+            PointLight currPointLight = new PointLight(pointLight);
+            Vector3f lightPos = currPointLight.getPosition();
+            Vector4f aux = new Vector4f(lightPos, 1);
+            aux.mul(viewMatrix);
+            lightPos.x = aux.x;
+            lightPos.y = aux.y;
+            lightPos.z = aux.z;
+            shaderProgram.setUniform("pointLight", currPointLight);
+
+            // Get a copy of the directional light object and transform its position to view coordinates
+            DirectionalLight currDirLight = new DirectionalLight(directionalLight);
+            Vector4f dir = new Vector4f(currDirLight.getDirection(), 0);
+            dir.mul(viewMatrix);
+            currDirLight.setDirection(new Vector3f(dir.x, dir.y, dir.z));
+            shaderProgram.setUniform("directionalLight", currDirLight);
+
+            shaderProgram.setUniform("texture_sampler", 0);
         }
         // TODO
         /* Student code
