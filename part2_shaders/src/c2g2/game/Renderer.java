@@ -95,6 +95,30 @@ public class Renderer {
 
         return shaderProgram;
     }
+    
+    public ShaderProgram createGourandShader() throws Exception {
+    	ShaderProgram shaderProgram = new ShaderProgram();
+
+        shaderProgram.createVertexShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gourand_vertex.vs"))));
+        shaderProgram.createFragmentShader(new String(Files.readAllBytes(Paths.get("src/resources/shaders/gourand_fragment.fs"))));
+        shaderProgram.link();
+
+        // Create uniforms for modelView and projection matrices and texture
+        shaderProgram.createUniform("projectionMatrix");
+        shaderProgram.createUniform("modelViewMatrix");
+        shaderProgram.createUniform("texture_sampler");
+
+        // Create uniform for material
+        shaderProgram.createMaterialUniform("material");
+
+        // Create lighting related uniforms
+        shaderProgram.createUniform("specularPower");
+        shaderProgram.createUniform("ambientLight");
+        shaderProgram.createPointLightUniform("pointLight");
+        shaderProgram.createDirectionalLightUniform("directionalLight");
+
+        return shaderProgram;
+    }
 
     // TODO
     /* Student code
@@ -107,7 +131,7 @@ public class Renderer {
         // Create our example shader
         shaderProgramList.put("phong", createPhongShader());
         shaderProgramList.put("skeleton", createSkeletonShader());
-
+        shaderProgramList.put("gourand", createGourandShader());
         // Student code
         // TODO 
     }
@@ -167,6 +191,12 @@ public class Renderer {
         }
         // Provided example: basic skeleton shader
         else if(currentShader.equals("skeleton")) {
+            shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+
+            // Update Light Uniforms
+            shaderProgram.setUniform("ambientLight", ambientLight);
+        }
+        else if(currentShader.equals("gourand")) {
             shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
             // Update Light Uniforms

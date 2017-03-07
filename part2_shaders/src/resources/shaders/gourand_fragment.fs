@@ -1,10 +1,11 @@
 #version 330
 
-in vec4 outColor;
+in vec4 colorToFrag;
 
 out vec4 fragColor;
 
+
 void main()
 {
-	fragColor = outColor;
+    fragColor = colorToFrag;;
 }
