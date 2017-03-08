@@ -96,5 +96,5 @@ void main()
     totalLight += calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
     totalLight += calcPointLight(pointLight, mvVertexPos, mvVertexNormal);
     
-    fragColor = baseColour * totalLight * gl_TexCoord[0].st;
+    fragColor = baseColour * totalLight;
 }

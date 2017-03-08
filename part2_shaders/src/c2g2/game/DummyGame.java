@@ -107,6 +107,13 @@ public class DummyGame implements IGameLogic {
             currentShaderIndex = 2 % renderer.getNumShaders();
             System.out.println("selected shader: " +  renderer.getShaderName(currentShaderIndex));
         }
+        /****************************add on******************************/
+        else if(window.isKeyPressed(GLFW_KEY_6)){
+            // select current shader
+            currentShaderIndex = 3 % renderer.getNumShaders();
+            System.out.println("selected shader: " +  renderer.getShaderName(currentShaderIndex));
+        }
+        /****************************add on******************************/
     	else if(window.isKeyPressed(GLFW_KEY_Q)){
     		//select current object
     		currentObj = currentObj + 1;
