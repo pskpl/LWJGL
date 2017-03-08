@@ -154,7 +154,6 @@ public class Renderer {
         // Create uniforms for modelView and projection matrices and texture
         shaderProgram.createUniform("projectionMatrix");
         shaderProgram.createUniform("modelViewMatrix");
-        shaderProgram.createUniform("texture_sampler");
 
         // Create uniform for material
         shaderProgram.createMaterialUniform("material");
@@ -319,8 +318,6 @@ public class Renderer {
             dir.mul(viewMatrix);
             currDirLight.setDirection(new Vector3f(dir.x, dir.y, dir.z));
             shaderProgram.setUniform("directionalLight", currDirLight);
-
-            shaderProgram.setUniform("texture_sampler", 0);
         }
         // TODO
         /* Student code
